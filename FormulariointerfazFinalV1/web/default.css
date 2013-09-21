@@ -1,0 +1,339 @@
+
+html, body
+{
+	height: 100%;
+}
+
+body
+{
+	margin: 0;
+	padding: 0;
+	background: #2F2F2F url(images/bg02.jpg) repeat;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 12pt;
+	font-weight: 300;
+	color: #5B5B5B;
+}
+
+h1, h2, h3
+{
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+	font-weight: 700;
+	color: #222222;
+}
+
+h1
+{
+	font-size: 2em;
+}
+
+h2
+{
+	font-size: 2.6em;
+}
+
+h3
+{
+	font-size: 1.6em;
+}
+
+p, ol, ul
+{
+	margin-top: 0px;
+}
+
+p
+{
+	line-height: 180%;
+}
+
+strong
+{
+}
+
+a
+{
+	color: #222222;
+}
+
+a:hover
+{
+	text-decoration: none;
+}
+
+a img
+{
+	border: none;
+}
+
+img.border
+{
+}
+
+img.alignleft
+{
+	float: left;
+}
+
+img.alignright
+{
+	float: right;
+}
+
+img.aligncenter
+{
+	margin: 0px auto;
+}
+
+hr
+{
+	display: none;
+}
+
+.title
+{
+	border-bottom: solid 1px #dbdbdb;
+	margin: 0 0 3em 0;
+	text-align: center;
+}
+
+.title:after
+{
+	content: '';
+	display: block;
+	border-top: solid 1px #dbdbdb;
+	height: 8px;
+}
+
+.title h2
+{
+	margin: 0 0 1em 0;
+	font-weight: 700;
+}
+
+.title .byline
+{
+	position: relative;
+	top: -2em;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	font-weight: 400;
+	font-size: 0.90em;
+	color: #8E8E8E;
+}
+/** WRAPPER */
+
+
+
+#featured h2
+{
+    
+	padding-bottom: 1.5em;
+	letter-spacing: 0.10em;
+	text-transform: uppercase;
+	font-size: 1.5em;
+	font-weight: 400;
+}
+
+#featured .style1 a
+{
+}
+
+.wrapper-style1
+{
+	overflow: hidden;
+	width: 1200px;
+	margin: 0px auto;
+	padding: 5em 0em 3em 0em;
+}
+
+.container
+{
+	width: 1200px;
+	margin: 0px auto;
+}
+
+
+.image
+{
+	display: inline-block;
+}
+
+/*********************************************************************************/
+/* Header                                                                        */
+/*********************************************************************************/
+
+#header-wrapper
+{
+	overflow: hidden;
+	background: url(images/header.jpg) no-repeat center bottom;
+	background-size: 100% 100%;
+        width: 1378px;
+        height: 612px;
+}
+
+#header
+{
+	position: relative;
+	height: 455px;
+}
+
+/*********************************************************************************/
+/* Logo                                                                          */
+/*********************************************************************************/
+
+#logo
+{
+	position: absolute;
+	top: 3.2em;
+	left: 0;
+	width: 100%;
+	margin-top: -0.5em;
+}
+
+#logo h1
+{
+	display: inline-block;
+	padding: 0.8em 1.3em 0.6em 0.50em;
+	font-size: 2.5em;
+	text-transform: uppercase;
+	font-weight: 900;
+}
+
+#logo a
+{
+	text-decoration: none;
+	color: #FFF;
+}
+
+/*********************************************************************************/
+/* Menu                                                                           */
+/*********************************************************************************/
+
+	#menu
+{
+	position: absolute;
+	right: 0;
+	top: 5em;
+}
+
+.homepage #menu
+{
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+}
+
+#menu > ul > li > ul
+{
+	display: none;
+}
+
+#menu ul
+{
+	display: inline-block;
+}
+
+#menu li
+{
+	display: block;
+	float: left;
+	text-align: center;
+}
+
+#menu li a, #menu li span
+{
+	display: block;
+	padding: 0.80em 1.5em;
+	letter-spacing: 0.25em;
+	text-decoration: none;
+	font-size: 0.80em;
+	font-weight: 600;
+	text-transform: uppercase;
+	outline: 0;
+	color: #FFF;
+}
+
+#menu li:hover a, #menu li.active a, #menu li.active span
+{
+}
+
+#menu .current_page_item a
+{
+}
+
+
+/* Footer */
+
+#footer
+{
+	overflow: hidden;
+	font-size: 10;
+	text-align: center;
+	text-transform: uppercase;
+	color: white;
+}
+
+
+
+#footer p
+{
+	letter-spacing: 0.15em;
+	font-size: 0.80em;
+}
+
+#footer .U
+{
+	letter-spacing: 0.15em;
+	font-size: 0.80em;
+}
+
+#footer .i
+{
+	letter-spacing: 0.15em;
+	font-size: 0.80em;
+}
+
+
+
+.datagrid table { border-collapse: collapse; text-align: left; width: 100%;  }
+.datagrid {border-top-width: 267px; font: normal 12px/150% Arial, Helvetica, sans-serif; 
+          background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; 
+          -moz-border-radius: 3px; border-radius: 3px; }
+.datagrid table td, .datagrid table th { border-top-width: 267px; padding: 3px 10px; }
+.datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, 
+                             color-stop(0.05, #006699), color-stop(1, #00557F) );
+                         background:-moz-linear-gradient( center top, #006699 5%, 
+                             #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(
+                             startColorstr='#006699', endColorstr='#00557F');
+                         background-color:#006699; color:#FFFFFF; 
+                         font-size: 15px; font-weight: bold; border-left: 1px solid #0070A8; } 
+.datagrid table thead th:first-child { border: none; }
+.datagrid table tbody td { color: #00496B; border-left: 1px solid #E1EEF4;font-size: 12px;
+                          font-weight: normal; }
+.datagrid table tbody .alt td {background: #E1EEF4; color: #00496B; }
+.datagrid table tbody td:first-child { border-left: none; }
+.datagrid table tbody tr:last-child td { border-bottom: none; }
+.datagrid table tfoot td div { border-top: 1px solid #006699;background: #E1EEF4;} 
+.datagrid table tfoot td { padding: 0; font-size: 12px }
+.datagrid table tfoot td div{ padding: 2px; }
+.datagrid table tfoot td ul { margin: 0; padding:0; list-style: none; text-align: right; }
+.datagrid table tfoot  li { display: inline; }
+.datagrid table tfoot li a { text-decoration: none; display: inline-block;  
+                            padding: 2px 8px; margin: 1px;color: #FFFFFF;
+                            border: 1px solid #006699;-webkit-border-radius: 3px;
+                            -moz-border-radius: 3px; border-radius: 3px; 
+                            background:-webkit-gradient( linear, left top, 
+                                left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );
+                            background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );
+                            filter:progid:DXImageTransform.Microsoft.gradient(
+                                startColorstr='#006699', endColorstr='#00557F');
+                            background-color:#006699; }
+
+.datagrid table tfoot ul.active, .datagrid table tfoot ul a:hover { text-decoration: none;
+        border-color: #006699; color: #FFFFFF; background: none; background-color:#00557F;}
