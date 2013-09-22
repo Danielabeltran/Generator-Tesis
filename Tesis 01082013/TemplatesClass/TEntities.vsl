@@ -1,0 +1,114 @@
+## ${g.pathMay()} ** Se obtiene el path ingresado por el Usuario Final 
+## ${m.getName()} ** Se obtiene nombre de la Base de Datos almacenada en el objeto Model()
+## ${entidad.getName()} ** Se obtiene el nombre de las entidades almacenada en el objeto Entity()
+## #foreach($campo in $entidad.getField())#end ** Con este ciclo se obtienen en $campo el nombre de los campos, tipo del campo, si esPrimary y scale_numeric  almacenados en el objeto Field()
+## #foreach($relacion in $entidad.getRelation())#end  ** Con este ciclo se obtienen en $relacion EntidadOrigen, CampoOrigen, tipoCampoOrigen, EntidadDestino y CampoDestino  almacenados en el objeto Relation()
+
+package entity;
+#*
+*   Si existe en la clase algun campo con tipo Date o BigDecimal crea el import respectivo
+*#
+#foreach($campo in $entidad.getField())
+#if (${campo.getType().equals("Date")})
+import java.sql.Date;
+#else
+#if (${campo.getType().equals("Time")})
+import java.sql.Time;
+#else
+#if (${campo.getType().equals("Timestamp")})
+import java.sql.Timestamp;
+#end#end#end#end
+
+
+/**
+* @author Clase generada por Generator v1.0
+*/
+public class ${entidad.getName()}{
+
+#foreach( $campo in $entidad.getField())
+    private ${campo.getType()} ${campo.getName()};
+#end
+
+#foreach($relacion in $entidad.getRelation()) 
+#if(${relacion.getEntidadDestino().equals(${entidad.getName().toLowerCase()})}) 
+    private List<${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}> ${relacion.getEntidadOrigen().toLowerCase()};
+#end
+#end
+
+public ${entidad.getName()}(){
+
+#*
+*   Validacion que permite reconocer todos los tipos de los campos en base de datos MySql
+*#
+#foreach($campo in $entidad.getField())
+#if(${campo.getType().equals("double")}) 
+    this.${campo.getName()} = 0.0;
+#else#if(${campo.getType().equals("String")})
+    this.${campo.getName()} = "";
+#else#if(${campo.getType().equals("int")})
+    this.${campo.getName()} = 0;
+#else#if(${campo.getType().equals("float")})
+    this.${campo.getName()} = 0;
+#else#if(${campo.getType().equals("boolean")})
+#end#end#end#end#end#end
+
+#*
+*   Para cada relacion en la tabla ejecuta la sentencia
+*#
+#foreach($relacion in $entidad.getRelation()) 
+#if(${relacion.getEntidadDestino().equals(${entidad.getName().toLowerCase()})}) 
+    this.${relacion.getEntidadOrigen().toLowerCase()} = new ArrayList<${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}>();
+#end
+#end
+}
+
+#*
+*   Generacion de los Get y Set
+*#
+#foreach( $campo in $entidad.getField())
+    /**
+    * Get the value of ${campo.getName()}
+    *
+    * @return the value of ${campo.getName()}
+    */
+    public ${campo.getType()} get${campo.getName().substring(0, 1).toUpperCase()}${campo.getName().substring(1).toLowerCase()}(){
+    return ${campo.getName()};
+    }
+
+    /**
+    * Set the value of ${campo.getName()}
+    *
+    * @return the value of ${campo.getName()}
+    */
+    public void set${campo.getName().substring(0, 1).toUpperCase()}${campo.getName().substring(1).toLowerCase()}(${campo.getType()} ${campo.getName()}){
+        this.${campo.getName()} = ${campo.getName()};
+    }
+
+#end
+
+#*
+*   Para cada relacion en la tabla genera los Get y Set respectivos.
+*#
+#foreach($relacion in $entidad.getRelation()) 
+#if(${relacion.getEntidadDestino().equals(${entidad.getName().toLowerCase()})}) 
+    /**
+    * Get the value of ${relacion.getEntidadOrigen()}
+    *
+    * @return the value of ${relacion.getEntidadOrigen()}
+    */
+    public List<${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}> get${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}() {
+    return ${relacion.getEntidadOrigen().toLowerCase()};
+    }
+
+    /**
+    * Set the value of ${relacion.getEntidadOrigen()}
+    *
+    * @return the value of ${relacion.getEntidadOrigen()}
+    */
+    public void set${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}(List<${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}> ${relacion.getEntidadOrigen().toLowerCase()}){
+        this.${relacion.getEntidadOrigen().toLowerCase()} = ${relacion.getEntidadOrigen().toLowerCase()};
+    }
+#end
+#end
+
+}

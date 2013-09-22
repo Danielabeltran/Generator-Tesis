@@ -1,0 +1,252 @@
+#* ${g.pathMay()} ** Se obtiene el path ingresado por el Usuario Final 
+ ${m.getName()} ** Se obtiene nombre de la Base de Datos almacenada en el objeto Model()
+ ${entidad.getName()} ** Se obtiene el nombre de las entidades almacenada en el objeto Entity()
+ #foreach($campo in $entidad.getField())#end ** Con este ciclo se obtienen en $campo el nombre de los campos, tipo del campo, si esPrimary y scale_numeric  almacenados en el objeto Field()
+ #foreach($relacion in $entidad.getRelation())#end  ** Con este ciclo se obtienen en $relacion EntidadOrigen, CampoOrigen, tipoCampoOrigen, EntidadDestino y CampoDestino  almacenados en el objeto Relation()
+*# 
+package data;
+
+import entity.${entidad.getName()};
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+#foreach($campo in $entidad.getField())
+#if (${campo.getType().equals("Date")})
+import java.sql.Date;
+#else
+#if (${campo.getType().equals("Time")})
+import java.sql.Time;
+#else
+#if (${campo.getType().equals("Timestamp")})
+import java.sql.Timestamp;
+#end#end#end#end
+
+/**
+* @author Clase generada por Generator v1.0
+*/
+
+public class ${entidad.getName()}DAO{
+    
+     /**
+     * Obtiene la lista de ${entidad.getName()}
+     * @return lista de ${entidad.getName()}
+     */
+#*
+*   Genera el Method CREATE
+*#
+public void create(${entidad.getName()} ${entidad.getName().substring(0, 1).toLowerCase()}) {
+        
+        /**
+        * Crea la conexion a la base de datos
+        */
+        ConexionDB database = new ConexionDB();
+        database.makeConnection();
+
+        try{
+        /**
+        * Genera la inserción en la tabla
+        */
+        String format = "insert into ${entidad.getName()}(#foreach($campo in $entidad.getField()) ${campo.getName()}, #end) values(#foreach($campo in $entidad.getField()) ,'%s' #end)";
+        String sql = String.format(format#foreach($campo in $entidad.getField()), ${entidad.getName().substring(0, 1).toLowerCase()}.get${campo.getName().substring(0, 1).toUpperCase()}${campo.getName().substring(1).toLowerCase()}() #end);
+        
+        /**
+        * Guarda los datos en la base de datos ${m.getName()}
+        */  
+        database.nonQuery(sql);
+            
+        }catch(Exception ex){
+            
+        }
+    }
+
+#*
+*   Genera el Method GETALL
+*#
+    public List<${entidad.getName()}> getAll(){
+
+        /**
+        * Crea la conexion a la base de datos
+        */
+        ConexionDB database = new ConexionDB();
+        database.makeConnection();
+
+        /**
+        * Crea una lista de ${entidad.getName()}
+        */
+        List<${entidad.getName()}> list = new ArrayList<${entidad.getName()}>();
+        
+        try{
+        /**
+        * Crea una lista de ${m.getName()}
+        */
+        ResultSet query = database.query("select * from ${entidad.getName()}");
+        
+        /**
+        * Se recorre la consulta
+        */
+        while (query.next()){
+
+        /**
+        * Se obtiene los datos de ${entidad.getName()}
+        */
+        #foreach( $campo in $entidad.getField())
+${campo.getType()} ${campo.getName()} = query.get${campo.getType().substring(0, 1).toUpperCase()}${campo.getType().substring(1).toLowerCase()}("${campo.getName()}");
+        #end
+        
+        /**
+        * Crea una entidad ${entidad.getName()}
+        */
+        ${entidad.getName()} ${entidad.getName().substring(0, 1).toLowerCase()} = new ${entidad.getName()}();
+        #foreach( $campo in $entidad.getField())        
+${entidad.getName().substring(0, 1).toLowerCase()}.set${campo.getName().substring(0, 1).toUpperCase()}${campo.getName().substring(1).toLowerCase()}(${campo.getName()});
+        #end
+        /**
+        * Agrega la entidad a la lista
+        */
+        list.add(${entidad.getName().substring(0, 1).toLowerCase()});
+        }
+        }catch(Exception ex){
+        }
+        return list;
+    }
+
+#*
+*   Genera el Method UPDATE
+*#
+
+#*
+*   Si no existe una llave primaria no genera este Method
+*#
+    #foreach($campo in $entidad.getField())
+    #if (${campo.getPrimary().equals("PRI")})
+
+    public void update(${entidad.getName()} ${entidad.getName().substring(0, 1).toLowerCase()}) {
+
+        /**
+        * Crea la conexion a la base de datos
+        */
+        ConexionDB database = new ConexionDB();
+        database.makeConnection();
+        
+        try{
+        /**
+        * Crea la sentencia de actualizacion en la tabla ${entidad.getName()}
+        */
+        String format = "update ${entidad.getName()} set#foreach($campo in $entidad.getField()), ${campo.getName()} = '%s'#end #foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})where ${campo.getName()} = '%s'}#end#end";
+        String sql = String.format(format#foreach($campo in $entidad.getField()), ${entidad.getName().substring(0, 1).toLowerCase()}.get${campo.getName().substring(0, 1).toUpperCase()}${campo.getName().substring(1).toLowerCase()}()#end);
+        
+        /**
+        * Ejecuta la actualización
+        */
+        database.nonQuery(sql);
+        
+        }
+        
+        catch(Exception ex){
+        }
+    }
+#end#end
+#*
+*  Genera el Method DELETE
+*#
+
+#*
+*   Si no existe una llave primaria no genera este Method
+*#
+    #foreach($campo in $entidad.getField())
+    #if (${campo.getPrimary().equals("PRI")})
+
+    public void delete${entidad.getName()}(#foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getType()} ${campo.getName()}#end#end){
+        /**
+        * Crea la conexion a la base de datos
+        */
+        ConexionDB database = new ConexionDB();
+        database.makeConnection();
+        
+        try{
+
+        /**
+        * Crea la sentencia de eliminacion de la tabla de la base de datos
+        */
+        String format = "delete from ${entidad.getName()} where #foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getName()} = '%s'}#end#end";
+        String sql = String.format(format, #foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getName()}#end#end);
+        
+        /**
+        * Ejecuta la actualización
+        */
+        database.nonQuery(sql);
+        }
+        catch(Exception ex){
+        }
+     }
+#end#end
+
+#*
+*   Genera el Method GETBYPRIMARYKEY
+*#
+
+#*
+*   Si no existe una llave primaria no genera este Method
+*#  
+#foreach($campo in $entidad.getField())
+#if (${campo.getPrimary().equals("PRI")})
+   
+public ${entidad.getName()} getBy#foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getName().substring(0, 1).toUpperCase()}${campo.getName().substring(1).toLowerCase()}#end#end (#foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getType()} ${campo.getName()}#end#end){
+        /**
+        * Crea la conexion a la base de datos
+        */
+        ConexionDB database = new ConexionDB();
+        database.makeConnection();
+        
+        try{
+
+        /**
+        * Ejecuta la consulta en la tabla ${entidad.getName()}
+        */
+        ResultSet query = database.query("select * from ${entidad.getName()} where #foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getName()}#end#end = " +  #foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getName()}#end#end);
+     
+        /**
+        * Primer registro
+        */
+        query.first();
+        
+        /**
+        * Se obtienen los campos de la tabla ${entidad.getName()}
+        */
+        ${entidad.getName()} ${entidad.getName().substring(0, 1).toLowerCase()} = new ${entidad.getName()}();
+        #foreach( $campo in $entidad.getField())        
+${entidad.getName().substring(0, 1).toLowerCase()}.set${campo.getName().substring(0, 1).toUpperCase()}${campo.getName().substring(1).toLowerCase()}(query.get${campo.getType().substring(0, 1).toUpperCase()}${campo.getType().substring(1).toLowerCase()}("${campo.getName()}"));
+        #end
+        
+        /**
+        * retorna la entididad
+        */
+        return ${entidad.getName().substring(0, 1).toLowerCase()};
+
+       }
+        catch(Exception ex){
+        }
+        return null;
+    } 
+#end #end 
+
+#*
+*   Genera Method GETBYFOREIGNKEY
+*#
+
+#*
+*   Si no existe una relacion  no genera este Method
+*#  
+
+#foreach($relacion in $entidad.getRelation()) 
+#if(${relacion.getEntidadOrigen().equals(${entidad.getName().toLowerCase()})})    
+public List<${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}> ${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}de${relacion.getEntidadDestino().substring(0, 1).toUpperCase()}${relacion.getEntidadDestino().substring(1).toLowerCase()}(${relacion.getTypeCampoOrigen()} ${relacion.getCampoOrigen()} ){
+        
+       throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+#end#end
+
+
+}
+

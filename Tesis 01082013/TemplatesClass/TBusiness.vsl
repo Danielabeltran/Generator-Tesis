@@ -1,0 +1,128 @@
+## ${g.pathMay()} ** Se obtiene el path ingresado por el Usuario Final 
+## ${m.getName()} ** Se obtiene nombre de la Base de Datos almacenada en el objeto Model()
+## ${entidad.getName()} ** Se obtiene el nombre de las entidades almacenada en el objeto Entity()
+## #foreach($campo in $entidad.getField())#end ** Con este ciclo se obtienen en $campo el nombre de los campos, tipo del campo, si esPrimary y scale_numeric  almacenados en el objeto Field()
+## #foreach($relacion in $entidad.getRelation())#end  ** Con este ciclo se obtienen en $relacion EntidadOrigen, CampoOrigen, tipoCampoOrigen, EntidadDestino y CampoDestino  almacenados en el objeto Relation()
+
+package business;
+#*
+*   Si existe en la clase algun campo con tipo Date o BigDecimal crea el import respectivo
+*#
+#foreach($campo in $m.getEntities()) 
+import data.${campo.getName()}DAO;
+#end
+#foreach($campo in $m.getEntities()) 
+import entity.${campo.getName()};
+#end
+import java.util.List;
+#foreach($campo in $entidad.getField())
+#if (${campo.getType().equals("Date")})
+import java.sql.Date;
+#else
+#if (${campo.getType().equals("BigDecimal")})
+import java.math.BigDecimal;
+#end#end#end
+
+/**
+* @author Clase generada por Generator v1.0
+*/
+
+public class ${entidad.getName()}BO {
+
+     /**
+     * Crea un ${entidad.getName()} en el sistema
+     * @param ${entidad.getName().substring(0, 1).toLowerCase()} ${entidad.getName()} a crear
+     */
+#*
+*   Genera el Method CREATE
+*#
+    public void create(${entidad.getName()} ${entidad.getName().substring(0, 1).toLowerCase()}){
+        /**
+        * Crea un objeto de datos
+        */ 
+        ${entidad.getName()}DAO object = new ${entidad.getName()}DAO();
+        /**
+        * Crea la entidad en la base de datos
+        */ 
+        object.create(${entidad.getName().substring(0, 1).toLowerCase()}); 
+    }
+
+     /**
+     * Obtiene la lista de ${entidad.getName()}
+     * @return lista de ${entidad.getName()}
+     */
+    public List<${entidad.getName()}> getAll(){
+        /**
+        * Crea un objeto de datos
+        */   
+        ${entidad.getName()}DAO object = new ${entidad.getName()}DAO();
+        /**
+        * Obtiene la lista de ${entidad.getName()}
+        */   
+        List<${entidad.getName()}> list = object.getAll();
+        /**
+        *@return list 
+        */ 
+        return list;
+    }
+
+     /**
+     * Actualiza  ${entidad.getName()}
+     * @param ${entidad.getName().substring(0, 1).toLowerCase()} ${entidad.getName()} a Actualizar
+     */
+    public void update${entidad.getName()}(${entidad.getName()} ${entidad.getName().substring(0, 1).toLowerCase()}){
+     
+       new ${entidad.getName()}DAO().update(${entidad.getName().substring(0, 1).toLowerCase()});
+    }
+#*
+*   Method DELETE
+*#
+
+#*
+*   Si no existe una llave primaria no genera este Method
+*#
+    #foreach($campo in $entidad.getField())
+    #if (${campo.getPrimary().equals("PRI")})
+     /**
+     * Elimina  ${entidad.getName()}
+     * @param ${entidad.getName().substring(0, 1).toLowerCase()} ${entidad.getName()} a Eliminar
+     */
+    public void delete${entidad.getName()}(#foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getType()} ${campo.getName()}#end#end){
+     
+       new ${entidad.getName()}DAO().delete${entidad.getName()}(#foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getName()}#end#end);
+    }
+
+    /**
+     * Obtiene la llave primaria de  ${entidad.getName()}
+     * @param ${entidad.getName().substring(0, 1).toLowerCase()} ${entidad.getName()} de la tabla a obtener la llave primaria
+     */
+    public ${entidad.getName()} getBy#foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getName().substring(0, 1).toUpperCase()}${campo.getName().substring(1).toLowerCase()}#end#end (#foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getType()} ${campo.getName()}#end#end){
+     
+       return new ${entidad.getName()}DAO().getBy#foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getName().substring(0, 1).toUpperCase()}${campo.getName().substring(1).toLowerCase()}#end#end (#foreach($campo in $entidad.getField())#if (${campo.getPrimary().equals("PRI")})${campo.getName()}#end#end);
+    }
+#end#end
+#*
+*   Genera Method GETBYPRIMARYKEY
+*#
+
+#*
+*   Si no existe una relacion  no genera este Method
+*#  
+
+#foreach($relacion in $entidad.getRelation()) 
+#if(${relacion.getEntidadOrigen().equals(${entidad.getName().toLowerCase()})})    
+public List<${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}> getAll${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}de${relacion.getEntidadDestino().substring(0, 1).toUpperCase()}${relacion.getEntidadDestino().substring(1).toLowerCase()}(${relacion.getTypeCampoOrigen()} ${relacion.getCampoOrigen()} ){
+        
+       ${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}DAO object = new ${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}DAO();
+       List<${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}> list = object.${relacion.getEntidadOrigen().substring(0, 1).toUpperCase()}${relacion.getEntidadOrigen().substring(1).toLowerCase()}de${relacion.getEntidadDestino().substring(0, 1).toUpperCase()}${relacion.getEntidadDestino().substring(1).toLowerCase()}(${relacion.getCampoOrigen()});
+       return list;
+    }
+
+#end#end
+   
+
+//EntidadOrigen/CampoOrigen/typeCampoOrigen -> EntidadDestino/CampoDestino
+#foreach($relacion in $entidad.getRelation()) 
+    //${relacion.getEntidadOrigen()}, ${relacion.getCampoOrigen()}, ${relacion.getTypeCampoOrigen()} -> ${relacion.getEntidadDestino()}, ${relacion.getCampoDestino()}
+#end
+}
